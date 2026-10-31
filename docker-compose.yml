@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: agentprobe-api
+    command: uvicorn agentprobe.api.server:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - agentprobe-data:/app/data
+    environment:
+      - AGENTPROBE_DB_PATH=/app/data/agentprobe.db
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+    restart: unless-stopped
+
+  dashboard:
+    build: .
+    container_name: agentprobe-dashboard
+    command: streamlit run agentprobe/ui/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+      - agentprobe-data:/app/data
+    environment:
+      - AGENTPROBE_DB_PATH=/app/data/agentprobe.db
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  agentprobe-data:
+

@@ -1,0 +1,21 @@
+# Core Web & API
+fastapi>=0.116.0
+uvicorn[standard]>=0.34.0
+pydantic>=2.10.0
+python-dotenv>=1.0.0
+httpx>=0.28.0
+requests>=2.32.0
+
+# Agent Framework & Orchestration
+langgraph>=1.2.0
+langchain-core>=1.7.0
+
+# UI & Visualization
+streamlit>=1.40.0
+plotly>=6.0.0
+pandas>=2.2.0
+
+# Testing & Quality
+pytest>=8.3.0
+pytest-cov>=5.0.0
+
